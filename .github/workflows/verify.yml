@@ -8,8 +8,11 @@ on:
       - master
 
 jobs:
-  verify:
+  "verify and publish":
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC used for JSR publishing
     steps:
       - uses: "actions/setup-node@v4"
         with:
@@ -26,15 +29,5 @@ jobs:
         run: deno lint
       - name: Biome Lint
         run: npx @biomejs/biome lint .
-  publish:
-    needs: verify
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write # OIDC used for JSR publishing
-    steps:
-      - uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
       - run: deno publish
+        if: "github.event_name == 'push' && github.ref == 'refs/heads/master'"
