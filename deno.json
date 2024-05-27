@@ -5,5 +5,10 @@
 	"exclude": [
 		"biome.json",
 		"README.development.md"
-	]
+	],
+	"publish": {
+		"exclude": [
+			"src/tests/deps.test.ts"
+		]
+	}
 }
