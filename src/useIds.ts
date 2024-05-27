@@ -17,6 +17,20 @@ function randomString(length: number): string {
  *
  * @param useRef The `useRef` hook.
  * @param length The length of the generated IDs.
+ * @example
+ * ```tsx
+ * const useIds = createUseIds(useRef);
+ *
+ * function MyComponent() {
+ *     const [buttonId, textId] = useIds();
+ *
+ *     return <>
+ *         <button id={buttonId}>Click me</button>
+ *         <label for={textId}>Enter text:</label>
+ *         <input id={textId} />
+ *     </>;
+ * }
+ * ```
  */
 export function createUseIds(
 	useRef: useRefType<string[]>,
