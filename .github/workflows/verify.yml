@@ -1,0 +1,35 @@
+name: Verify and Publish
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: "actions/setup-node@v4"
+        with:
+          node-version: 20
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: deno test
+      - name: Dry run publish
+        run: deno publish --dry-run
+      - name: Lint
+        run: npx @biomejs/biome lint .
+  publish:
+    needs: verify
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # OIDC used for JSR publishing
+    steps:
+      - run: deno publish
