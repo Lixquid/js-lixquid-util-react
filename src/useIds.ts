@@ -1,4 +1,4 @@
-import type { useRefType } from "./types.d.ts";
+import type { useRefType } from "./_internal/types.d.ts";
 
 const alphabet =
 	"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
