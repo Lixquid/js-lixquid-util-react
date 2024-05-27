@@ -40,11 +40,13 @@ export function createUseIds(
 		const ref = useRef([]);
 		let i = 0;
 		while (true) {
-			if (i >= ref.current.length) {
-				ref.current.push(randomString(length));
+			let id = ref.current[i];
+			if (id === undefined) {
+				id = randomString(length);
+				ref.current[i] = id;
 			}
-			yield ref.current[i]!;
 			i++;
+			yield id;
 		}
 	};
 }
