@@ -23,7 +23,7 @@ Deno.test("setFloat - valid", () => {
 	eq(calls, [1.5]);
 	setFloat(callback)(ev("2.5"));
 	eq(calls, [1.5, 2.5]);
-})
+});
 
 Deno.test("setFloat - no fallback", () => {
 	const calls: number[] = [];
