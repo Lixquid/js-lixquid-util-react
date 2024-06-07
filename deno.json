@@ -3,6 +3,7 @@
 	"version": "0.3.0",
 	"exports": "./mod.ts",
 	"exclude": [
+		".vscode",
 		"biome.json",
 		"README.development.md"
 	],
