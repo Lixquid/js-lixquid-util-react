@@ -1,5 +1,9 @@
 export type useRefType<T> = (initialValue: T) => { current: T };
 
+export type useStateType<T> = (
+	initialValue: T | (() => T),
+) => readonly [T, (value: T) => void];
+
 /**
  * A minimal HTML input-like object that represents the minimum properties
  * needed for the library.
