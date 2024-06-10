@@ -31,7 +31,20 @@ type useLocalStorage = <T>(
 /**
  * Creates a hook that acts like `useState`, but serializes sets to
  * {@link localStorage}, and deserializes initial values from it on first load.
- * @param useState
+ * @param useState The `useState` hook.
+ * @example
+ * ```tsx
+ * const useLocalStorage = createUseLocalStorage(useState);
+ *
+ * function MyComponent() {
+ *     const [score, setScore] = useLocalStorage("score", 0);
+ *
+ *     return <>
+ *         Score: {score}
+ *         <button onClick={() => setScore(score + 1)}>Increment</button>
+ *     </>;
+ * }
+ * ```
  */
 export function createUseLocalStorage(
 	useState: useStateType<unknown>,
