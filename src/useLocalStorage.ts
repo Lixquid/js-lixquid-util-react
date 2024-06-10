@@ -89,6 +89,26 @@ export function createUseLocalStorage(
 		return [state as T, setState];
 	};
 }
+
+//#region Types
+function keywise<T extends Record<string, unknown>>(
+	initialValue: T,
+): {
+	serialize(value: T): string;
+	deserialize(value: string): T;
+} {
+	return {
+		serialize(value: T) {
+			return JSON.stringify(value);
+		},
+		deserialize(value: string) {
+			const parsed = JSON.parse(value);
+			return { ...initialValue, ...parsed };
+		},
+	};
+}
+//#endregion
+
 createUseLocalStorage.types = {
 	/**
 	 * This serialization pattern will "fill-in" gaps in the deserialized value
@@ -114,15 +134,5 @@ createUseLocalStorage.types = {
 	 * }
 	 * ```
 	 */
-	keywise<T extends Record<string, unknown>>(initialValue: T) {
-		return {
-			serialize(value: T) {
-				return JSON.stringify(value);
-			},
-			deserialize(value: string) {
-				const parsed = JSON.parse(value);
-				return { ...initialValue, ...parsed };
-			},
-		};
-	},
+	keywise,
 };
