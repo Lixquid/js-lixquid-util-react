@@ -74,3 +74,37 @@ Deno.test("useLocalStorage - custom serialize/deserialize", () => {
 		localStorage.removeItem(key);
 	}
 });
+
+Deno.test("useLocalStorage - keywise", () => {
+	const key = String(Math.random());
+
+	try {
+		let useLocalStorage = createUseLocalStorage(createUseState());
+
+		const { keywise } = createUseLocalStorage.types;
+
+		const initial = { int: 1, str: "a" };
+		let [value, setValue] = useLocalStorage(key, initial, {
+			...keywise(initial),
+		});
+		eq(value, initial);
+		setValue({ int: 2, str: "b" });
+		eq(localStorage.getItem(key), '{"int":2,"str":"b"}');
+
+		// From memory
+		[value, setValue] = useLocalStorage(key, initial, {
+			...keywise(initial),
+		});
+		eq(value, { int: 2, str: "b" });
+
+		// From localStorage
+		useLocalStorage = createUseLocalStorage(createUseState());
+		const initial2 = { int: 1, str: "a", newKey: "new" };
+		const [value2] = useLocalStorage(key, initial2, {
+			...keywise(initial2),
+		});
+		eq(value2, { int: 2, str: "b", newKey: "new" });
+	} finally {
+		localStorage.removeItem(key);
+	}
+});

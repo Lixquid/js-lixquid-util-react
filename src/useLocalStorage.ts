@@ -76,3 +76,40 @@ export function createUseLocalStorage(
 		return [state as T, setState];
 	};
 }
+createUseLocalStorage.types = {
+	/**
+	 * This serialization pattern will "fill-in" gaps in the deserialized value
+	 * with keys from the initial value.
+	 *
+	 * This is useful for storing an object of settings that may be added to
+	 * over time.
+	 * @example
+	 * ```tsx
+	 * const useLocalStorage = createUseLocalStorage(useState);
+	 *
+	 * function MyComponent() {
+	 *     const [settings, setSettings] = useLocalStorage(
+	 *         "settings", { theme: "light" }, {
+	 *             ...createUseLocalStorage.types.keywise({ theme: "light" }),
+	 *         },
+	 *     );
+	 *
+	 *     return <>
+	 *         Theme: {settings.theme}
+	 *         <button onClick={() => setSettings({ theme: "dark" })}>Dark mode</button>
+	 *     </>;
+	 * }
+	 * ```
+	 */
+	keywise<T extends Record<string, unknown>>(initialValue: T) {
+		return {
+			serialize(value: T) {
+				return JSON.stringify(value);
+			},
+			deserialize(value: string) {
+				const parsed = JSON.parse(value);
+				return { ...initialValue, ...parsed };
+			},
+		};
+	},
+};
